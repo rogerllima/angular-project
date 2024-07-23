@@ -3,8 +3,6 @@ import { Register } from '../register';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
-import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-register',
