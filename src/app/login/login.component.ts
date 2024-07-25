@@ -32,7 +32,7 @@ export class LoginComponent {
     this.loginService.execute(this.login.getRawValue())
       .subscribe({
         next: (login: any) => {
-          localStorage.setItem('token', JSON.stringify(login.token));
+          localStorage.setItem('access_token', JSON.stringify(login.token));
         },
         error: e => {
           const errorMessage = e.error?.message || 'Erro desconhecido';
