@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LoginService } from './service/login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +27,7 @@ export class LoginComponent {
   constructor(
     private loginService: LoginService,
     private _snackBar: MatSnackBar,
+    private router: Router
   ) { }
 
   onSubmit() {
@@ -33,6 +35,7 @@ export class LoginComponent {
       .subscribe({
         next: (login: any) => {
           localStorage.setItem('access_token', JSON.stringify(login.token));
+          this.router.navigate(['/agendamentos']);
         },
         error: e => {
           const errorMessage = e.error?.message || 'Erro desconhecido';
