@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { interval } from 'rxjs';
 import { debounce } from 'rxjs/operators';
 import { ConfirmAgendamento } from './confirmAgendamento';
+import { ListClientsService } from './services/listClients/listClients.service';
 
 @Component({
   selector: 'app-agendamentos',
@@ -43,6 +44,7 @@ export class AgendamentosComponent implements OnInit {
 
   constructor(
     private _snackBar: MatSnackBar,
+    private listClientsService: ListClientsService,
   ) { }
 
   confirmAgendamento: ConfirmAgendamento[] = [
@@ -57,33 +59,25 @@ export class AgendamentosComponent implements OnInit {
       .pipe(
         debounce(() => {
           this.delay = this.delay;
-          console.log(this.delay);
           return interval(this.delay);
         })
       )
-      .subscribe(data => console.log(data));
-  }
-
-  onSearch(): void {
-    console.log('onSearchSubmit', this.scheduleClient.value.search);
-  }
-
-  onSubmitRegisterClient() {
-    console.log('onSubmitRegisterClient', this.registerClient.value);
+      .subscribe(
+        data => this.listClientsService.register(data as string)
+          .subscribe({
+            next: (data: any) => {
+              console.log(data);
+            },
+            error: e => {
+              const errorMessage = e.error?.message || 'Erro desconhecido';
+              this._snackBar.open('Register failed: ' + JSON.stringify(errorMessage), 'Close', { duration: 3000 });
+              console.log(JSON.stringify(errorMessage));
+            }
+          })
+      );
   }
 
   onSubmitAgendamento() {
-    // this.loginService.execute(this.login.getRawValue())
-    //   .subscribe({
-    //     next: (login: any) => {
-    //       localStorage.setItem('token', JSON.stringify(login.token));
-    //     },
-    //     error: e => {
-    //       const errorMessage = e.error?.message || 'Erro desconhecido';
-    //       this._snackBar.open('Register failed: ' + JSON.stringify(errorMessage), 'Close', { duration: 3000 });
-    //       console.log(JSON.stringify(errorMessage));
-    //     }
-    //   });;
     this._snackBar.open('Register success', 'Close', { duration: 3000 });
     console.log('onSubmit', this.scheduleClient.value);
   }
